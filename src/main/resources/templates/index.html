@@ -15,39 +15,25 @@
 
 </head>
 <body>
-    <header>
-        <nav>
-            <div class="nav-wrapper">
-                <a href="#" class="brand-logo">Lista de Eventos</a>
-                <ul id="nav-mobile" class="right hide-on-med-and-down">
-                    <li><a href="/cadastrarEvento" class="waves-effect waves-light btn"><i class="material-icons right">add</i>Cadastrar Eventos</a></li>
-                </ul>
-            </div>
-        </nav>
-    </header>
-    <table width="100%" class="container">
-        <thead>
-            <tr>
-                <th>Nome</th>
-                <th>Local</th>
-                <th>Data</th>
-                <th>Horário</th>
-                <th>Deletar</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="evento : ${eventos}">
-                <td><a th:href="${(#mvc.url('EC#detalhesEvento').arg(0, evento.codigo)).build()}"><span th:text="${evento.nome}"></span></a></td>
-                <td><span th:text="${evento.local}"></span></td>
-                <td><span th:text="${evento.data}"></span></td>
-                <td><span th:text="${evento.horario}"></span></td>
-                <td><a class="waves-effect waves-light btn-small" th:href="${(#mvc.url('EC#deletarEvento').arg(0, evento.codigo)).build()}"><i class="material-icons left">delete_sweep</i></a></td>
-            </tr>
-        </tbody>
 
-    </table>
+<header>
+    <nav class="menu">
+        <div class="nav-wrapper">
+            <a href="#" class="brand-logo">Lista de Eventos</a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="/cadastrarEvento" class="waves-effect waves-light btn"><i class="material-icons left">add_circle_outline</i>Cadastrar evento</a></li>
+            </ul>
+        </div>
+    </nav>
 
-    <!--JavaScript at end of body for optimized loading-->
+</header>
+
+<h1>Sistema para cadastro de eventos!!</h1>
+<h3>Faça seu Login e cadastre seus eventos e listas de convidados!</h3>
+
+
+
+<!--JavaScript at end of body for optimized loading-->
     <script type="text/javascript" src="materialize/js/materialize.min.js"></script>
 
 </body>

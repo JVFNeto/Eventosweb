@@ -19,25 +19,17 @@ import javax.validation.Valid;
 @Controller
 public class EventoController {
 
-    @Autowired// fornece controle sobre onde e como a ligação entre os beans deve ser realizada.
-    private EventoRepository er;//variavel
+    @Autowired
+    private EventoRepository er;
 
     @Autowired
     private ConvidadoRepository cr;
 
-// repository é um objeto que isola os objetos ou entidades do domínio do código que acessa o banco de dados.
-/*
-Um repositório é essencialmente uma coleção de objetos de domínio em memória, e,
- com base nisso o padrão Repository permite realizar o isolamento entre a camada
-  de acesso a dados (DAL) de sua aplicaçãoe sua camada de apresentação (UI) e camada de negócios (BLL).
- */
-
     @RequestMapping(value="/cadastrarEvento", method=RequestMethod.GET)
-    public String form(){//criando metodo
-
+    public String form(){
         return "formEvento";
     }
-    //Os métodos determinam o comportamento dos objetos de uma classe
+
     @RequestMapping(value="/cadastrarEvento", method=RequestMethod.POST)
     public String form(@Valid Evento evento, BindingResult result, RedirectAttributes attributes){
         if(result.hasErrors()){
@@ -51,11 +43,10 @@ Um repositório é essencialmente uma coleção de objetos de domínio em memór
     }
 
     @RequestMapping("/eventos")
-    public ModelAndView listaEventos (){// metodo prara retornar a lista
-
-        ModelAndView mv= new ModelAndView("index");
+    public ModelAndView listaEventos(){
+        ModelAndView mv = new ModelAndView("listaEventos");
         Iterable<Evento> eventos = er.findAll();
-        mv.addObject("eventos",eventos);
+        mv.addObject("eventos", eventos);
         return mv;
     }
 
@@ -65,46 +56,41 @@ Um repositório é essencialmente uma coleção de objetos de domínio em memór
         ModelAndView mv = new ModelAndView("detalhesEvento");
         mv.addObject("evento", evento);
 
-        Iterable<Convidado> convidado = cr.findByEvento(evento);
-        mv.addObject("convidado", convidado);
+        Iterable<Convidado> convidados = cr.findByEvento(evento);
+        mv.addObject("convidados", convidados);
 
         return mv;
-
     }
 
-    @RequestMapping ("/deletarEvento")
+    @RequestMapping("/deletarEvento")
     public String deletarEvento(long codigo){
         Evento evento = er.findByCodigo(codigo);
         er.delete(evento);
-
         return "redirect:/eventos";
-
-
     }
-    @RequestMapping(value="/{codigo}", method=RequestMethod.POST)
-    public String detalhesEventoPost(@PathVariable("codigo") long codigo, @Valid Convidado convidado, BindingResult result, RedirectAttributes attributes){
-if(result.hasErrors()){
-    attributes.addFlashAttribute("mensagem", "Verifique os campos!!!");
-    return "redirect:/{codigo}";
 
-}
+
+    @RequestMapping(value="/{codigo}", method=RequestMethod.POST)
+    public String detalhesEventoPost(@PathVariable("codigo") long codigo, @Valid Convidado convidado,  BindingResult result, RedirectAttributes attributes){
+        if(result.hasErrors()){
+            attributes.addFlashAttribute("mensagem", "Verifique os campos!");
+            return "redirect:/{codigo}";
+        }
         Evento evento = er.findByCodigo(codigo);
         convidado.setEvento(evento);
         cr.save(convidado);
-        attributes.addFlashAttribute("mensagem", "Convidado adcicionado com sucesso!!!");
+        attributes.addFlashAttribute("mensagem", "Convidado adicionado com sucesso!");
         return "redirect:/{codigo}";
-
     }
 
-    @RequestMapping ("/deletarConvidado")
+    @RequestMapping("/deletarConvidado")
     public String deletarConvidado(String rg){
-        Convidado convidado= cr.findByRg(rg);
+        Convidado convidado = cr.findByRg(rg);
         cr.delete(convidado);
 
         Evento evento = convidado.getEvento();
-        long codigolong = evento.getCodigo();
-        String codigo = ""+codigolong;
-        return "redirect:/"+ codigo;
-
+        long codigoLong = evento.getCodigo();
+        String codigo = "" + codigoLong;
+        return "redirect:/" + codigo;
     }
 }
