@@ -25,7 +25,7 @@ public class ImplementsUserDetailsService implements UserDetailsService {
         if(usuario == null){
             throw new UsernameNotFoundException("Usuario não encontrado!");
         }
-        return new User(usuario.getUsername(), usuario.getPassword(), true, true, true, true, usuario.getAuthorities());
-    }
+        return new User(usuario.getUsername(), usuario.getPassword(), true, true,
+                true, true, usuario.getAuthorities());
+  }  }
 
-}
